@@ -11,23 +11,46 @@
 
 <body>
 
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <h1 class="display-3">Jumbo heading</h1>
-            <p class="lead">Jumbo helper text</p>
-            <hr class="my-2">
-            <p>More info</p>
-            <p class="lead">
-                <a class="btn btn-primary btn-lg" href="Jumbo action link" role="button">Jumbo action name</a>
-            </p>
+
+    <div class="container">
+        <div class="row">
+            <div class="column player-one" style="background-color:#aaa;">
+
+                <form class="bottom">
+                    <div class="form-group">
+                        <label>Player 1</label>
+                        <input type="email" class="form-control" id="player-one-input" placeholder=" Type Paper, Rock, Scissors">
+                    </div>
+                    <button type="submit" class="btn btn-primary player-one-button">Submit</button>
+                </form>
+
+            </div>
+            <div class="column status" style="background-color:#bbb;">
+
+                <h1>Status</h1>
+
+            </div>
+            <div class="column player-two" style="background-color:#ccc;">
+
+                <form class="bottom">
+                    <div class="form-group">
+                        <label>Player 2</label>
+                        <input type="email" class="form-control" id="player-two-input" placeholder=" Type Paper, Rock, Scissors">
+                    </div>
+                    <button type="submit" class="btn btn-primary player-two-button">Submit</button>
+                </form>
+
+            </div>
         </div>
     </div>
+
 
     <div class="container">
 
 
     </div>
-
+    <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-database.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="./assets/javascript/app.js" async defer></script>
