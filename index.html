@@ -12,16 +12,17 @@
 <body>
 
 
-    <div class="container">
+    <div class="container-fluid" style="width: 70%">
         <div class="row">
-            <div class="column player-one" style="background-color:#aaa;">
-
-                <form class="bottom">
+            <div class="column player-area" style="background-color:#aaa;">
+                <form class="bottom player-form">
+                    <div id="playerImage"></div>
                     <div class="form-group">
-                        <label>Player 1</label>
-                        <input type="email" class="form-control" id="player-one-input" placeholder=" Type Paper, Rock, Scissors">
+                        <label>Player</label>
+                        <input type="text" class="form-control" id="player-input"
+                            placeholder=" Type Paper, Rock, Scissors">
                     </div>
-                    <button type="submit" class="btn btn-primary player-one-button">Submit</button>
+                    <button type="submit" class="btn btn-primary player-button">Submit</button>
                 </form>
 
             </div>
@@ -29,15 +30,14 @@
 
                 <h1>Status</h1>
 
-            </div>
-            <div class="column player-two" style="background-color:#ccc;">
+                </p><span> Your Score: </span><span id="playerScore"></span></p>
+                </p><span> Opponent Score: </span><span id="opponentScore"></span></p>
 
-                <form class="bottom">
-                    <div class="form-group">
-                        <label>Player 2</label>
-                        <input type="email" class="form-control" id="player-two-input" placeholder=" Type Paper, Rock, Scissors">
-                    </div>
-                    <button type="submit" class="btn btn-primary player-two-button">Submit</button>
+            </div>
+
+            <div class="column opponent-area" style="background-color:#ccc;">
+                <form class="bottom opponent-form">
+                    <div id="opponentImage"></div>
                 </form>
 
             </div>
