@@ -15,24 +15,24 @@
     <div class="container-fluid" style="width: 70%">
         <div class="row">
             <div class="column player-area" style="background-color:#aaa;">
-                <form class="bottom player-form">
+                <form class="bottom" id="player-form">
                     <div id="playerImage"></div>
                     <div class="form-group">
                         <label>Player</label>
                         <input type="text" class="form-control" id="player-input"
                             placeholder=" Type Paper, Rock, Scissors">
                     </div>
-                    <button type="submit" class="btn btn-primary player-button">Submit</button>
+                    <button type="submit" class="btn btn-primary" id="player-button">Submit</button>
                 </form>
-
             </div>
             <div class="column status" style="background-color:#bbb;">
 
                 <h1>Status</h1>
 
+                </p><span> Status: </span><span id="playerStatus"></span></p>
                 </p><span> Your Score: </span><span id="playerScore"></span></p>
                 </p><span> Opponent Score: </span><span id="opponentScore"></span></p>
-
+                <p><span style="color:green;" id="gameStatus"></span></p>
             </div>
 
             <div class="column opponent-area" style="background-color:#ccc;">

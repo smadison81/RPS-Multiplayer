@@ -20,23 +20,41 @@ $(document).ready(function () {
     var connectedRef = database.ref(".info/connected");
 
     var con;
-
     var player = {
         number: '0',
-        name: '',
         wins: 0,
         losses: 0,
-        turns: 0,
         choice: ''
     };
     var opponent = {
         number: '0',
-        name: '',
         wins: 0,
         losses: 0,
-        turns: 0,
         choice: ''
     };
+
+    const options = ["paper", "rock", "scissors"];
+
+    $("#player-button").on("click", function (event) {
+        event.preventDefault();
+        player.choice = $("#player-input").val();
+
+        if (options.indexOf(player.choice) > -1) {
+
+            opponent.choice = player.choice;
+            console.log(`Player ${player.number} Selected ${player.choice}`)
+            console.log(`Opponent ${opponent.number} Selected ${opponent.choice}`)
+            con.update({
+                choice: player.choice
+            });
+
+        } else {
+
+            $("#playerStatus").text("Invalid Choice")
+        }
+
+
+    })
 
 
 
@@ -61,91 +79,96 @@ $(document).ready(function () {
 
     })
 
-
     connectionsRef.once('value', function (snapshot) {
         if (Object.keys(snapshot.val()).indexOf('1') === -1) {
             player.number = '1';
             opponent.number = '2';
+            console.log("You are Player " + player.number)
+            console.log("You are Opponent " + opponent.number)
         } else if (Object.keys(snapshot.val()).indexOf('2') === -1) {
             player.number = '2';
             opponent.number = '1';
+            console.log("You are Player " + player.number)
+            console.log("You are Opponent " + opponent.number)
         }
 
+        // If you got a player number, you're 1 or 2.
         if (player.number !== '0') {
-
+            // Make a connection to Firebase and send your info.
             con = connectionsRef.child(player.number);
-            connectionsRef.set(player);
+            con.set(player);
 
+            // When I disconnect, remove this device.
             con.onDisconnect().remove();
 
+            // If 1 and 2 were taken, your number is still 0.
         } else {
+
+            $("#player-form").hide();
+            $("#gameStatus").text("Spectator").css("color", "red");
+
+
             app.delete();
         }
-        console.log("You are Player " + player.number)
-        console.log("You are Opponent " + opponent.number)
     });
 
+    connectionsRef.on('value', function (snapshot) {
 
-    if (player.number === 1) {
+        if (con) {
 
-        $("#player-score").text(player.wins);
-        $("#opponent-score").text(opponent.wins);
-        playerOneGame();
-    }
-
-    else if (player.number === 2) {
-        $("button").attr("id", "opponent-button");
-        playerTwoGame();
-
-    }
+            if (Object.keys(snapshot.val()).indexOf(opponent.number) !== -1) {
+                opponent = snapshot.val()[opponent.number];
+                player = snapshot.val()[player.number];
 
 
+                playGame()
+
+            }
+        }
+    })
+
+  
 
 
-
-
-
-
-
-
-
-    function gameSetup() {
-
-
-    }
-
-
-    function playerOneGame() {
-        $('.player-button').on('click', function () {
-            if ($("#player-input") === "rock" && $("#opponent-input") === "scissors") {
-                console.log("You Wins");
+    function playGame() {
+        if (options.indexOf(player.choice) > -1 && options.indexOf(opponent.choice) > -1) {
+            if (player.choice === "rock" && opponent.choice === "scissors") {
+                alert("You Win");
+                player.wins++;
+                opponent.losses++;
             } else if ($("#player-input") === "paper" && $("#opponent-input") === "rock") {
-                alert("Player 1 Wins");
+                alert("You Win");
+                player.wins++;
+                opponent.losses++;
             } else if ($("#player-input") === "scissors" && $("#opponent-input") === "paper") {
-                alert("Player 1 Wins");
-
+                alert("You Win");
+                player.wins++;
+                opponent.losses++;
             } else if ($("#player-input") === $("#opponent-input")) {
                 alert("It's a Tie");
             } else {
+
                 alert("Opponent Wins")
+                player.losses++;
+                opponent.wins++;
             }
-        })
+
+            con.update({
+                choice: "",
+                wins: player.wins,
+                losses: player.losses
+
+            });
+
+
+            $("#playerScore").text(player.wins)
+            $("#opponentScore").text(opponent.wins)
+
+
+        }
+
+
     };
-    function playerTwoGame() {
-        $('.player-button').on('click', function () {
-            if ($("#player-input") === "rock" && $("#opponent-input") === "scissors") {
-                console.log("You Wins");
-            } else if ($("#player-input") === "paper" && $("#opponent-input") === "rock") {
-                alert("Player 1 Wins");
-            } else if ($("#player-input") === "scissors" && $("#opponent-input") === "paper") {
-                alert("Player 1 Wins");
-
-            } else if ($("#player-input") === $("#opponent-input")) {
-                alert("It's a Tie");
-            } else {
-                alert("Opponent Wins")
-            }
-        })
 
 
 
