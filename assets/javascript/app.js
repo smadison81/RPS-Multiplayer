@@ -19,6 +19,8 @@ $(document).ready(function () {
 
     var connectedRef = database.ref(".info/connected");
 
+    // Declare all global variables
+
     var con;
     var player = {
         number: '0',
@@ -35,16 +37,7 @@ $(document).ready(function () {
 
     const options = ["paper", "rock", "scissors"];
 
-    // const options = [
-
-    //     {rps: ["rock",],
-    //     url: ["./assets/images/rock.png"]},
-    //     {rps: ["paper",],
-    //     url: ["./assets/images/paper.png"]},
-    //     {rps: ["scissors",],
-    //     url: ["./assets/images/scissors.png"]},
-    // ]
-
+    //Start on.click function that allows players to select paper rock scissors and disables the button
 
     $("#player-button").on("click", function (event) {
         event.preventDefault();
