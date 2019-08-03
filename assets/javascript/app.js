@@ -37,7 +37,7 @@ $(document).ready(function () {
 
     const options = ["paper", "rock", "scissors"];
 
-    //Start on.click function that allows players to select paper rock scissors and disables the button
+    //Start on.click function that allows players to select paper rock scissors and disables the button after entry. Also doesnt allow anything outside of typing rock paper scissors to be pressed.
 
     $("#player-button").on("click", function (event) {
         event.preventDefault();
@@ -60,17 +60,16 @@ $(document).ready(function () {
 
     })
 
-
+// Code below adds payers to connections so that you can get an accurate count of number of people connected.  Code should dissconnect from server on exit from game.
 
     connectedRef.on("value", function (snap) {
 
-        // If they are connected..
+       
         if (snap.val()) {
 
-            // Add user to the connections list.
+           
             var con = connectionsRef.push(true);
 
-            // Remove user from the connection list when they disconnect.
             con.onDisconnect().remove();
         }
     });
@@ -81,6 +80,8 @@ $(document).ready(function () {
         console.log("numbers of people connected are:" + snapshot.numChildren());
 
     })
+
+    //this code sets the players by connection. If you are Player 1, you are also Opponent 2, Player 2 is Opponent 1. Anything outside of 2 playrs is disconnected and given a game full message.
 
     connectionsRef.once('value', function (snapshot) {
         if (Object.keys(snapshot.val()).indexOf('1') === -1) {
@@ -109,7 +110,7 @@ $(document).ready(function () {
         } else {
 
             $("#player-form").hide();
-            $("#gameStatus").text("Game Room Filled").css("color", "red");
+            $("#winLose").text("Game Room Filled").css("color", "red");
 
 
             app.delete();
@@ -131,8 +132,7 @@ $(document).ready(function () {
         }
     })
 
-
-
+//gmae logic, this runs the game on each connection.  and appends the wins losses to the html.
 
     function playGame() {
         if (options.indexOf(player.choice) > -1 && options.indexOf(opponent.choice) > -1) {
@@ -174,7 +174,6 @@ $(document).ready(function () {
                 losses: player.losses
 
             });
-
 
             $("#playerScore").text(player.wins)
             $("#opponentScore").text(player.losses)
