@@ -35,6 +35,17 @@ $(document).ready(function () {
 
     const options = ["paper", "rock", "scissors"];
 
+    // const options = [
+
+    //     {rps: ["rock",],
+    //     url: ["./assets/images/rock.png"]},
+    //     {rps: ["paper",],
+    //     url: ["./assets/images/paper.png"]},
+    //     {rps: ["scissors",],
+    //     url: ["./assets/images/scissors.png"]},
+    // ]
+
+
     $("#player-button").on("click", function (event) {
         event.preventDefault();
         player.choice = $("#player-input").val();
@@ -47,12 +58,12 @@ $(document).ready(function () {
             con.update({
                 choice: player.choice
             });
-
+            $("#player-button").attr("disabled", true);
         } else {
 
             $("#playerStatus").text("Invalid Choice")
         }
-
+        $("form").trigger("reset");
 
     })
 
@@ -73,8 +84,7 @@ $(document).ready(function () {
 
     connectionsRef.on("value", function (snapshot) {
 
-        // Display the viewer count in the html.
-        // The number of online users is the number of children in the connections list.
+
         console.log("numbers of people connected are:" + snapshot.numChildren());
 
     })
@@ -85,27 +95,28 @@ $(document).ready(function () {
             opponent.number = '2';
             console.log("You are Player " + player.number)
             console.log("You are Opponent " + opponent.number)
+            $("#player-area").text(`You Are Player ${player.number}`)
+
         } else if (Object.keys(snapshot.val()).indexOf('2') === -1) {
             player.number = '2';
             opponent.number = '1';
             console.log("You are Player " + player.number)
             console.log("You are Opponent " + opponent.number)
+            $("#player-area").text(`You Are Player ${player.number}`)
         }
 
-        // If you got a player number, you're 1 or 2.
+
         if (player.number !== '0') {
-            // Make a connection to Firebase and send your info.
+
             con = connectionsRef.child(player.number);
             con.set(player);
-
-            // When I disconnect, remove this device.
             con.onDisconnect().remove();
 
-            // If 1 and 2 were taken, your number is still 0.
+
         } else {
 
             $("#player-form").hide();
-            $("#gameStatus").text("Spectator").css("color", "red");
+            $("#gameStatus").text("Game Room Filled").css("color", "red");
 
 
             app.delete();
@@ -127,30 +138,41 @@ $(document).ready(function () {
         }
     })
 
-  
+
 
 
     function playGame() {
         if (options.indexOf(player.choice) > -1 && options.indexOf(opponent.choice) > -1) {
             if (player.choice === "rock" && opponent.choice === "scissors") {
-                alert("You Win");
+                console.log("You Win");
+                $('#playerImage').prepend('<img id="rock" src="./assets/images/rock.png" />');
+                $('#opponentImage').prepend('<img id="scissors" src="./assets/images/scissors.png" />');
+                $('#winLose').text("Winner");
                 player.wins++;
-                opponent.losses++;
-            } else if ($("#player-input") === "paper" && $("#opponent-input") === "rock") {
-                alert("You Win");
+
+            } else if (player.choice === "paper" && opponent.choice === "rock") {
+                console.log("You Win");
+                $('#playerImage').prepend('<img id="paper" src="./assets/images/paper.png" />');
+                $('#opponentImage').prepend('<img id="rock" src="./assets/images/rock.png" />');
+                $('#winLose').text("Winner");
                 player.wins++;
-                opponent.losses++;
-            } else if ($("#player-input") === "scissors" && $("#opponent-input") === "paper") {
-                alert("You Win");
+
+            } else if (player.choice === "scissors" && opponent.choice === "paper") {
+                console.log("You Win");
+                $('#playerImage').prepend('<img id="scissors" src="./assets/images/scissors.png" />');
+                $('#opponentImage').prepend('<img id="paper" src="./assets/images/paper.png" />');
+                $('#winLose').text("Winner");
                 player.wins++;
-                opponent.losses++;
-            } else if ($("#player-input") === $("#opponent-input")) {
-                alert("It's a Tie");
+
+            } else if (player.choice === opponent.choice) {
+                console.log("It's a Tie");
+                $('#winLose').text("TIE!");
             } else {
 
-                alert("Opponent Wins")
+                console.log("Opponent Wins")
+                $('#winLose').text("LOSER!!");
                 player.losses++;
-                opponent.wins++;
+
             }
 
             con.update({
@@ -162,7 +184,13 @@ $(document).ready(function () {
 
 
             $("#playerScore").text(player.wins)
-            $("#opponentScore").text(opponent.wins)
+            $("#opponentScore").text(player.losses)
+            setTimeout(function () {
+                $('#playerImage').html('');
+                $('#opponentImage').html('');
+                $('#winLose').text("");
+                $("#player-button").attr("disabled", false);
+            }, 3000);
 
 
         }

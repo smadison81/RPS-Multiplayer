@@ -3,6 +3,14 @@
 
 }
 
+body {
+
+  background-image: url("../images/rps1.jpg");
+
+  background-repeat: repeat;
+  background-color: #28b4e5;
+
+}
 
 .column {
   float: left;
@@ -31,3 +39,12 @@ div {
   position: relative;
 
 }
+
+img {
+
+  width: 100%;
+  height: auto;
+
+
+}
+
